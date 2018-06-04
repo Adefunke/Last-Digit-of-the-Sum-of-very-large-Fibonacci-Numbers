@@ -1,0 +1,68 @@
+import java.util.*;
+
+public class FibonacciPartialSum {
+ 
+     private static long getFibonacciPartialSum(long from, long to) {
+        long sum = 2;
+        long sum_small = 2;
+        if (to == 1) {
+            return 1;
+        } else if (to == 2) {
+                return 2;   
+        }else if (to == 0) {
+            return 0;
+        }
+        from = from % get_pisano_period(10);// get_pisano_period(10) is 60;
+        to = to % get_pisano_period(10);
+        long[] fib_array;
+
+        fib_array = new long[(int) to];
+        fib_array[0] = 1;
+        fib_array[1] = 1;
+        for (int i = 2; i < to; i++) {
+            fib_array[i] = fib_array[i - 1] + fib_array[i - 2] % 10;
+            sum += fib_array[i] % 10;
+        }
+        if (from <= 2) {
+            if (from <= 1) {
+                sum_small = 0;
+            } else {
+                sum_small = 1;
+            }
+        } else{
+       fib_array = new long[(int) from-1];
+            fib_array[0] = 1;
+            fib_array[1] = 1;
+            for (int i = 2; i < from-1; i++) {
+            fib_array[i] = fib_array[i - 1] + fib_array[i - 2] % 10;
+            sum_small += fib_array[i] % 10;
+        }}
+        long average = (sum % 10) - (sum_small % 10);
+        if (average < 0) {
+            return 10 + average;
+        } else {
+            return average;
+        }
+    }
+
+ private static long get_pisano_period(long m) {
+        long a = 0, b = 1;
+        long c = a + b;
+        for (int i = 0; i < m * m; i++) {
+            c = (a + b) % m;
+            a = b;
+            b = c;
+            if (a == 0 && b == 1) {
+                return i + 1;
+            }
+        }
+        return 1;
+    }
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        long from = scanner.nextLong();
+        long to = scanner.nextLong();
+        System.out.println(getFibonacciPartialSum(from, to));
+    }
+}
+
